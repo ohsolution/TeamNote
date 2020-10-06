@@ -55,3 +55,25 @@ bool Isintersect(vec v, vec u) // 선분교차 판정
 	}
 	return ab <= 0 && cd <= 0;
 }
+
+point geteq(vec a, vec b) // 직선 교차점 좌표 반환 -> 선분교차 판단 시 교차하는지 여부 먼저 파악
+{
+	point ret = a.sp;
+	val p = outerP(b, findV(a.sp, b.sp)) / outerP(a, b);
+
+	ret.x += p * (a.dx);
+	ret.y += p * (a.dy);
+	if (!ccw(b, findV(b.sp, ret)))
+	{
+		return ret;
+	}
+	else
+	{
+		ret = a.sp;
+		ret.x -= p * (a.dx);
+		ret.y -= p * (a.dy);
+		return ret;
+	}
+	return a.sp;
+}
+
