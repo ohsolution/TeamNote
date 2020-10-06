@@ -1,6 +1,8 @@
 //bipartite matching
-vector<int> link[203];
-int d[203];
+const int max_v
+vector<int> link[max_v];
+int d[203]
+;
 bool c[203];
 bool dfs(int x){
     for(auto next : link[x]){
