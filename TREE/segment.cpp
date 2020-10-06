@@ -4,7 +4,7 @@
 struct Data{ll val, flag;} seg[SEG_SIZE];
 int x, y;
 ll update_val;
-ll make_seg(int s, int e, int pos){
+ll make_seg(int e,int s=1, int pos=1){
     if(s == e){
         ll tmp; cin >> tmp;
         return seg[pos].val = tmp;
