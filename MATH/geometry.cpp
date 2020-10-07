@@ -91,7 +91,7 @@ bool cmp(point a,point b)
 	return a.x < b.x;
 }
 
-void graham_scan()
+void graham_scan() // 맨 좌측 하단 점을 기준으로 기준점과 각 점의 기울기가 낮은것 부터 점을 정렬한다.
 {
 	sort(arr,arr+n,cmp);
 	arr[0].dx = 1;
