@@ -4,6 +4,7 @@ struct point // 점
 {
 	val x;
 	val y;
+	val dx,dy; // 좌표정렬에 필요한 성분
 
 	bool operator >(point& b)
 	{
@@ -76,4 +77,84 @@ point geteq(vec a, vec b) // 직선 교차점 좌표 반환 -> 선분교차 판�
 	}
 	return a.sp;
 }
+
+/*Convex_Hull*/
+
+int n;
+int arr[max_v];
+
+bool cmp(point a,point b)
+{
+	if(a.dx * b.dy != a.dy * b.dx) return a.dy * b.dx < a.dx * b.dy;
+
+	if(a.y != b.y) return a.y < b.y;
+	return a.x < b.x;
+}
+
+void graham_scan()
+{
+	sort(arr,arr+n,cmp);
+	arr[0].dx = 1;
+	fa(i,1,n)
+	{
+		arr[i].dx = arr[i].x - arr[0].x;
+		arr[i].dy = arr[i].y - arr[0].y;
+ 	}
+	sort(arr,arr+n,cmp);
+	return;
+}
+
+
+int convex(void) // 점들의 좌표를 입력받고 볼록각형을 생성 뒤 넓이를 구하는 예제
+{
+	cin >> n;
+	fa(i,0,n) cin >> arr[i].x >> arr[i].y;
+
+	if(n<=2)
+	{
+		cout << 0;
+		return 0;
+	}
+
+	graham_scan();
+	stack <int> st;
+	st.push(0);
+	st.push(1);
+
+	int nxt = 2;
+
+	while(nxt < n)
+	{
+		while(st.size() >=2)
+		{
+			int A,B;
+			B = st.top(); st.pop();
+			A = st.top();
+
+			if(ccw(findV(arr[A],arr[B]),findV(arr[A],arr[nxt]))== 1)
+			{
+				st.push(B); break;
+			}
+		}
+		st.push(nxt++);
+	}
+
+
+	/* 스택에 남아있는 정점들이 볼록다각형을 이루는 정점들의 번호 */
+
+	point sp = arr[st.top()]; st.pop();
+	vec sl = findV(sp,arr[st.top()]); st.pop();
+
+	double ans = 0;
+
+	while(!st.empty())
+	{
+		vec curl = findV(sp,arr[st.top()]); st.pop();
+		ans += abs(outerP(sl,curl))/2;
+		sl = curl;
+	}
+
+	return ans;
+}	
+
 
